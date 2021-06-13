@@ -25,23 +25,65 @@ class HomePage extends StatefulWidget {
 }
 
 class __HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    Widget custombutton(String btnval) {
-      return Expanded(
-        child: OutlineButton(
-          padding: EdgeInsets.all(25.0),
-          onPressed: () {},
-          child: Text(
-            "$btnval",
-            style: TextStyle(
-              fontSize: 25.0,
-            ),
-          ),
-        ),
-      );
+  int firnum;
+  int secondnum;
+  String texttodiplay = "";
+  String res;
+  String operationtoperform;
+
+  void btnclicked(String btntext) {
+    if (btntext == "C") {
+      texttodiplay = "";
+      firnum = 0;
+      secondnum = 0;
+      res = "";
+    } else if (btntext == "+" ||
+        btntext == "-" ||
+        btntext == "*" ||
+        btntext == "/") {
+      firnum = int.parse(texttodiplay);
+      res = "";
+      operationtoperform = btntext;
+    } else if (btntext == "=") {
+      secondnum = int.parse(texttodiplay);
+      if (operationtoperform == "+") {
+        res = (firnum + secondnum).toString();
+      }
+      if (operationtoperform == "-") {
+        res = (firnum - secondnum).toString();
+      }
+      if (operationtoperform == "*") {
+        res = (firnum * secondnum).toString();
+      }
+      if (operationtoperform == "/") {
+        res = (firnum / secondnum).toString();
+      }
+    } else {
+      res = int.parse(texttodiplay + btntext).toString();
     }
 
+    setState(() {
+      texttodiplay = res;
+    });
+  }
+
+  Widget custombutton(String btnval) {
+    return Expanded(
+      child: OutlineButton(
+        padding: EdgeInsets.all(25.0),
+        onPressed: () => btnclicked(btnval),
+        child: Text(
+          "$btnval",
+          style: TextStyle(
+            fontSize: 25.0,
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -58,7 +100,7 @@ class __HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(10.0),
                 alignment: Alignment.bottomRight,
                 child: Text(
-                  "Output",
+                  "$texttodiplay",
                   style: TextStyle(
                     fontSize: 25.0,
                     fontWeight: FontWeight.w600,
